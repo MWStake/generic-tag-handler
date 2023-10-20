@@ -3,8 +3,10 @@
 namespace MWStake\MediaWiki\Component\GenericTagHandler\ParamDefinition;
 
 use MWStake\MediaWiki\Component\GenericTagHandler\Validator\TitleValidator;
+use ParamProcessor\ParamDefinition as Definition;
 
-class CategoryListParam extends \ParamProcessor\ParamDefinition {
+/** @inheritdoc */
+class CategoryListParam extends Definition {
 	protected $delimiter = '|';
 	protected $validator = null;
 
@@ -15,7 +17,7 @@ class CategoryListParam extends \ParamProcessor\ParamDefinition {
 	/**
 	 * @return bool
 	 */
-	public function isList() : bool {
+	public function isList(): bool {
 		return true;
 	}
 }

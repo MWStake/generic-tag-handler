@@ -18,5 +18,5 @@ namespace MWStake\MediaWiki\Component\GenericTagHandler;
  *     private variables.**
  */
 class MarkerType {
-	const KEY = 'markerType';
+	public const KEY = 'markerType';
 }

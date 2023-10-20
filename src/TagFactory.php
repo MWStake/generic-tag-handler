@@ -2,16 +2,12 @@
 
 namespace MWStake\MediaWiki\Component\GenericTagHandler;
 
-use Exception;
-use MWStake\MediaWiki\Component\GenericTagHandler\ITag;
-
 class TagFactory {
 
 	/**
-	 *
-	 * @return ITag[]
+	 * @return never
 	 */
 	public function getAll() {
-		throw new Exception( 'Not implemented' );
+		throw new \Exception( 'Not Implemented' );
 	}
 }

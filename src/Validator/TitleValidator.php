@@ -36,7 +36,7 @@ class TitleValidator extends TitleValidatorBase {
 
 	/**
 	 *
-	 * @param Title $oTitle
+	 * @param \Title $oTitle
 	 */
 	public function doValidation( $oTitle ) {
 		if ( !$oTitle ) {

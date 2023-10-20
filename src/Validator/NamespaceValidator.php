@@ -2,14 +2,15 @@
 
 namespace MWStake\MediaWiki\Component\GenericTagHandler\Validator;
 
+use Exception;
 use MediaWiki\MediaWikiServices;
-use ValueValidators\ValueValidatorObject;
+use ValueValidators\PackagePrivate\ValueValidatorBase;
 
-class NamespaceValidator extends ValueValidatorObject {
+class NamespaceValidator extends ValueValidatorBase {
 
 	/**
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $hasToExist = false;
 
@@ -43,7 +44,7 @@ class NamespaceValidator extends ValueValidatorObject {
 		$namespaceInfo = MediaWikiServices::getInstance()->getNamespaceInfo();
 		// TODO: finalize implementation
 		if ( $this->hasToExist && !$namespaceInfo->exists( $value ) ) {
-			$this->addErrorMessage(
+			throw new Exception(
 				wfMessage(
 					'mwstake-components-generictaghandler-validator-error-namespace-does-not-exist',
 					$value
@@ -52,7 +53,7 @@ class NamespaceValidator extends ValueValidatorObject {
 		}
 
 		if ( in_array( $value, $this->aBlacklist ) ) {
-			$this->addErrorMessage(
+			throw new Exception(
 				wfMessage(
 					'mwstake-components-generictaghandler-validator-error-namespace-on-blacklist',
 					$value

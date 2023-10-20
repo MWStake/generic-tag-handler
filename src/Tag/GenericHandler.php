@@ -2,14 +2,16 @@
 
 namespace MWStake\MediaWiki\Component\GenericTagHandler;
 
-use BlueSpice\ParamProcessor\ProcessingErrorMessageTranslator;
-use Html;
+use Exception;
+use MediaWiki\Html\Html;
+use ParamProcessor\Options;
+use ParamProcessor\Processor;
 
 class GenericHandler {
 
-	const TAG_DIV = 'div';
-	const TAG_SPAN = 'span';
-	const TAG_BUTTON = 'button';
+	public const TAG_DIV = 'div';
+	public const TAG_SPAN = 'span';
+	public const TAG_BUTTON = 'button';
 
 	/**
 	 *
@@ -31,7 +33,7 @@ class GenericHandler {
 
 	/**
 	 *
-	 * @var error
+	 * @var string[]
 	 */
 	protected $errors = [];
 
@@ -90,9 +92,9 @@ class GenericHandler {
 	 */
 	public function handle( $input, array $args, \Parser $parser, \PPFrame $frame ) {
 		$elementName = $this->tag->getContainerElementName();
-		if ( !empty( $elementName ) && !$this->isValidContainerElementName( $elementName ) ) {
+		if ( $elementName !== "" && !$this->isValidContainerElementName( $elementName ) ) {
 			$tagNames = $this->tag->getTagNames();
-			throw new \MWException(
+			throw new Exception(
 				"Invalid container element name for tag '{$tagNames[0]}'!"
 			);
 		}
@@ -124,13 +126,13 @@ class GenericHandler {
 
 		try {
 			$output = $handler->handle();
-		} catch ( \Exception $ex ) {
+		} catch ( Exception $ex ) {
 			// TODO: Find way to output "hidden" trace
 			$this->errors[] = $ex->getMessage();
 			return $this->makeErrorOutput();
 		}
 
-		if ( !empty( $elementName ) ) {
+		if ( $elementName !== "" ) {
 			$output = Html::rawElement(
 				$elementName,
 				$this->makeContainerAttributes(),
@@ -182,9 +184,9 @@ class GenericHandler {
 			wfMessage( 'mwstake-components-generictaghandler-tag-input-desc' )->plain()
 		);
 
-		$options = new \ParamProcessor\Options();
+		$options = new Options();
 		$options->setName( 'input-text' );
-		$processor = \ParamProcessor\Processor::newFromOptions( $options );
+		$processor = Processor::newFromOptions( $options );
 		$processor->setParameters(
 			[ $paramName => $this->processedInput ],
 			[ $paramDefinition ]
@@ -207,7 +209,7 @@ class GenericHandler {
 		}
 
 		$paramDefinitions = $this->tag->getArgsDefinitions();
-		if ( empty( $paramDefinitions ) ) {
+		if ( count( $paramDefinitions ) === 0 ) {
 			return;
 		}
 
@@ -252,12 +254,12 @@ class GenericHandler {
 	 * @return bool
 	 */
 	protected function hasErrors() {
-		return !empty( $this->errors );
+		return count( $this->errors ) !== 0;
 	}
 
 	/**
 	 *
-	 * @return string
+	 * @return array
 	 */
 	protected function makeErrorOutput() {
 		$out = [];
@@ -265,13 +267,13 @@ class GenericHandler {
 		foreach ( $this->errors as $errorKey => $errorMessage ) {
 			$translatedMessage = $translator->translate( $errorMessage );
 			$label = $this->makeErrorLabel( $errorKey );
-			$out[] = \Html::element(
+			$out[] = Html::element(
 				'div',
 				[ 'class' => 'mwstake-components-generictaghandler-error mwstake-components-generictaghandler-tag' ],
 				$label . $translatedMessage
 			);
 		}
-		return implode( "\n", $out );
+		return $out;
 	}
 
 	/**
@@ -284,15 +286,9 @@ class GenericHandler {
 	}
 
 	protected function addResourceLoaderModules() {
-		$modules = $this->tag->getResourceLoaderModules();
-		foreach ( $modules as $moduleName ) {
-			$this->parser->getOutput()->addModules( $moduleName );
-		}
+		$this->parser->getOutput()->addModules( $this->tag->getResourceLoaderModules() );
 
-		$moduleStyles = $this->tag->getResourceLoaderModuleStyles();
-		foreach ( $moduleStyles as $moduleStyleName ) {
-			$this->parser->getOutput()->addModuleStyles( $moduleStyleName );
-		}
+		$this->parser->getOutput()->addModuleStyles( $this->tag->getResourceLoaderModuleStyles() );
 	}
 
 	/**

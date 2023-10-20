@@ -2,6 +2,7 @@
 
 namespace MWStake\MediaWiki\Component\GenericTagHandler;
 
+use ParamProcessor\ParamDefinition;
 use Parser;
 use PPFrame;
 
@@ -31,17 +32,17 @@ interface ITag {
 	public function getContainerElementName();
 
 	/**
-	 * @return boolean
+	 * @return bool
 	 */
 	public function needsDisabledParserCache();
 
 	/**
-	 * @return boolean
+	 * @return bool
 	 */
 	public function needsParsedInput();
 
 	/**
-	 * @return boolean
+	 * @return bool
 	 */
 	public function needsParseArgs();
 
@@ -61,12 +62,12 @@ interface ITag {
 	public function getMarkerType();
 
 	/**
-	 * @return \BlueSpice\ParamProcessor\IParamDefinition
+	 * @return ?ParamDefinition
 	 */
 	public function getInputDefinition();
 
 	/**
-	 * @return \BlueSpice\ParamProcessor\IParamDefinition[]
+	 * @return ParamDefinition[]
 	 */
 	public function getArgsDefinitions();
 }

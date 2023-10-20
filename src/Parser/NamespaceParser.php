@@ -15,7 +15,7 @@ class NamespaceParser extends StringValueParser {
 	 */
 	protected function stringParse( $value ) {
 		if ( is_int( $value ) ) {
-			return (int)$value;
+			return $value;
 		}
 		$namespaceInfo = MediaWikiServices::getInstance()->getNamespaceInfo();
 		$nsId = $namespaceInfo->getCanonicalIndex( $value );

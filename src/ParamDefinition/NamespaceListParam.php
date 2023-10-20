@@ -3,8 +3,10 @@
 namespace MWStake\MediaWiki\Component\GenericTagHandler\ParamDefinition;
 
 use MWStake\MediaWiki\Component\GenericTagHandler\Validator\NamespaceValidator;
+use ParamProcessor\ParamDefinition as Definition;
 
-class NamespaceListParam extends \ParamProcessor\ParamDefinition {
+/** @inheritdoc */
+class NamespaceListParam extends Definition {
 	protected $delimiter = '|';
 	protected $validator = null;
 
@@ -15,7 +17,7 @@ class NamespaceListParam extends \ParamProcessor\ParamDefinition {
 	/**
 	 * @return bool
 	 */
-	public function isList() : bool {
+	public function isList(): bool {
 		return true;
 	}
 }

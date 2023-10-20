@@ -3,6 +3,7 @@
 namespace MWStake\MediaWiki\Component\GenericTagHandler;
 
 use MWStake\MediaWiki\Component\GenericTagHandler\MarkerType\General;
+use ParamProcessor\ParamDefinition;
 
 abstract class Tag implements ITag {
 
@@ -66,14 +67,14 @@ abstract class Tag implements ITag {
 	}
 
 	/**
-	 * @return \BlueSpice\ParamProcessor\IParamDefinition
+	 * @return ?ParamDefinition
 	 */
 	public function getInputDefinition() {
 		return null;
 	}
 
 	/**
-	 * @return \BlueSpice\ParamProcessor\IParamDefinition[]
+	 * @return ParamDefinition[]
 	 */
 	public function getArgsDefinitions() {
 		return [];
